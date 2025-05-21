@@ -63,16 +63,16 @@ export class WishlistService {
       WishlistValidation.DELETE,
       request
     );
-    const wishlist = await prisma.wishlist.delete({
-      where: {
-        userId: deleteWishlistRequest.userId,
-      },
-      include: {
-        items: true,
-      },
+    const wishlistExists = await prisma.wishlist.findUnique({
+      where: { userId: deleteWishlistRequest.userId },
     });
 
-    if (!wishlist) throw new ResponseError(404, "Wishlist not found");
+    if (!wishlistExists) throw new ResponseError(404, "Wishlist not found");
+
+    const wishlist = await prisma.wishlist.delete({
+      where: { userId: deleteWishlistRequest.userId },
+      include: { items: true },
+    });
     return toWishlistResponse(wishlist);
   }
 }

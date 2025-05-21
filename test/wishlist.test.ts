@@ -51,4 +51,56 @@ describe("GET /api/users/:userId/wishlist", () => {
     expect(response.body.data.userId).toBeDefined();
     expect(response.body.data.items).toBeDefined();
   });
+  it("should reject get wishlist", async () => {
+    const user = await UserTest.get();
+    const response = await supertest(web)
+      .get(`/api/users/${user.id * 100}/wishlist`)
+      .set("X-API-TOKEN", "test")
+      .send({
+        userId: user.id,
+      });
+
+    logger.debug(response.body);
+    console.log(JSON.stringify(response.body, null, 2));
+
+    expect(response.status).toBe(404);
+    expect(response.body.errors).toBeDefined();
+
+  });
+
+});
+
+describe("DELETE /api/users/:userId/wishlist", () => {
+  it("should delete wishlist by user ID", async () => {
+    const user = await UserTest.get();
+    const response = await supertest(web)
+      .delete(`/api/users/${user.id}/wishlist`)
+      .set("X-API-TOKEN", "test")
+      .send({
+        userId: user.id,
+      });
+
+    logger.debug(response.body);
+    console.log(JSON.stringify(response.body, null, 2));
+
+    expect(response.status).toBe(200);
+    expect(response.body.data).toBe("OK");
+  });
+ it("should reject delete wishlist", async () => {
+    const user = await UserTest.get();
+    const response = await supertest(web)
+      .delete(`/api/users/${user.id * 100}/wishlist`)
+      .set("X-API-TOKEN", "test")
+      .send({
+        userId: user.id,
+      });
+
+    logger.debug(response.body);
+    console.log(JSON.stringify(response.body, null, 2));
+
+    expect(response.status).toBe(404);
+    expect(response.body.errors).toBeDefined();
+
+  });
+
 });
