@@ -5,12 +5,12 @@ import { CreateUserRequest, LoginUserRequest, toUserResponse, UpdateUserRequest,
 import { UserValidation } from "../validation/user-validation";
 import { Validation } from "../validation/validation";
 import bcrypt from "bcrypt"
-import {v4 as uuid, validate} from "uuid"
+import {v4 as uuid} from "uuid"
 
 export class UserService {
 
   static async register(request: CreateUserRequest): Promise<UserResponse> {
-    const userRegisterRequest = Validation.validation(UserValidation.REGISTER, request)
+    const userRegisterRequest = Validation.validate(UserValidation.REGISTER, request)
     
     const checkUserExist = await prisma.user.count({
       where:{
@@ -33,7 +33,7 @@ export class UserService {
   }
 
   static async login(request: LoginUserRequest): Promise<UserResponse> {
-    const userLoginRequest = Validation.validation(UserValidation.LOGIN,request);
+    const userLoginRequest = Validation.validate(UserValidation.LOGIN,request);
 
     let user = await prisma.user.findUnique( {
       where: {
@@ -72,7 +72,7 @@ export class UserService {
   }
 
   static async update(user: User, request: UpdateUserRequest): Promise<UserResponse> {
-    const userUpdateRequest = Validation.validation(UserValidation.UPDATE, request)
+    const userUpdateRequest = Validation.validate(UserValidation.UPDATE, request)
 
     if(userUpdateRequest.name) {
       user.name= userUpdateRequest.name

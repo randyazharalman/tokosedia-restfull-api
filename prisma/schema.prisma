@@ -24,11 +24,15 @@ enum UserRole {
 
 enum TransactionStatus {
   pending
-  paid
+  processing
   cancelled
+  returned
   shipped
   delivered
+  completed
 }
+
+
 
 // Models
 model User {

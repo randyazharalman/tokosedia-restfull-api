@@ -7,6 +7,8 @@ import { ReviewController } from "../controller/review-controller";
 import { CartController } from "../controller/cart-controller";
 import { CartItemController } from "../controller/cart-item-controller";
 import { WishlistController } from "../controller/wishlist-controller";
+import { ActivityLogController } from "../controller/activity-log-controller";
+import { TransactionController } from "../controller/transaction-controller";
 
 export const apiRouter = express.Router();
 
@@ -60,4 +62,14 @@ apiRouter.get('/api/users/:userId/wishlist', WishlistController.get)
 apiRouter.post('/api/users/:userId/wishlist', WishlistController.create)
 apiRouter.delete('/api/users/:userId/wishlist', WishlistController.delete)
 
+// ACTIVITY LOG
+apiRouter.get('/api/users/:userId/activity-logs', ActivityLogController.get)
+apiRouter.post('/api/users/:userId/activity-logs', ActivityLogController.create)
+apiRouter.delete('/api/users/:userId/activity-logs', ActivityLogController.delete)
 
+
+// TRANSACTION
+apiRouter.get('/api/users/:userId/transactions', TransactionController.getByUserId)
+apiRouter.post('/api/users/:userId/transactions', TransactionController.create)
+apiRouter.put('/api/transactions/:transactionId', TransactionController.update)
+apiRouter.delete('/api/transactions/:transactionId', TransactionController.delete)

@@ -244,3 +244,27 @@ export class WishlistTest {
     return prisma.wishlist.deleteMany();
   }
 }
+
+export class ActivityLogTest{
+  static async create(){
+    const user = await UserTest.get()
+    return await prisma.activityLog.create({
+      data: {
+        userId: user.id,
+        action: "test"
+      }
+    })
+  }
+
+  static async get(){
+    return await prisma.activityLog.findFirst({
+      where: {
+        action: "test"
+      }
+    })
+  }
+
+  static async delete(){
+    return await prisma.activityLog.deleteMany()
+  }
+}

@@ -1,60 +1,82 @@
 import { Request } from "express";
-import { CartItemResponse, CreateCartItemRequest, DeleteCartItemRequest, toCartItemResponse, UpdateCartItemRequest } from "../model/cart-item-model";
+import {
+  CartItemResponse,
+  CreateCartItemRequest,
+  DeleteCartItemRequest,
+  toCartItemResponse,
+  UpdateCartItemRequest,
+} from "../model/cart-item-model";
 import { prisma } from "../application/database";
+import { ResponseError } from "../error/response-error";
 
 export class CartItemService {
-  static async create(request: CreateCartItemRequest): Promise<CartItemResponse> {
+  static async create(
+    request: CreateCartItemRequest
+  ): Promise<CartItemResponse> {
     const existingCartItem = await prisma.cartItem.findUnique({
       where: {
         cartId_productId: {
           cartId: request.cartId,
-          productId: request.productId
-        }
-      }
-    })
-    
-    if(existingCartItem) {
+          productId: request.productId,
+        },
+      },
+    });
+
+    if (existingCartItem) {
       return await prisma.cartItem.update({
         where: {
-          id: existingCartItem.id
+          id: existingCartItem.id,
         },
         data: {
-          quantity: existingCartItem.quantity + request.quantity
-        }
-      })
-
+          quantity: existingCartItem.quantity + request.quantity,
+        },
+      });
     }
     const cartItem = await prisma.cartItem.create({
-      data: request
-    })
+      data: request,
+    });
 
-    return toCartItemResponse(cartItem)
+    return toCartItemResponse(cartItem);
   }
 
-  static async update(request: UpdateCartItemRequest): Promise<CartItemResponse>{
+  static async update(
+    request: UpdateCartItemRequest
+  ): Promise<CartItemResponse> {
     const cartItem = await prisma.cartItem.update({
       where: {
         cartId_productId: {
           cartId: request.cartId,
-          productId: request.productId
-        }
+          productId: request.productId,
+        },
       },
-      data: { quantity: request.quantity }
-    })
+      data: { quantity: request.quantity },
+    });
 
-    return toCartItemResponse(cartItem)
+    return toCartItemResponse(cartItem);
   }
 
-  static async remove(request: DeleteCartItemRequest): Promise<CartItemResponse>{
+  static async remove(
+    request: DeleteCartItemRequest
+  ): Promise<CartItemResponse> {
+    const cartItemExists = await prisma.cartItem.findUnique({
+      where: {
+        cartId_productId: {
+          cartId: request.cartId,
+          productId: request.productId,
+        },
+      },
+    });
+
+    if (!cartItemExists) throw new ResponseError(404, "Cart item not found");
     const cartItem = await prisma.cartItem.delete({
       where: {
         cartId_productId: {
           cartId: request.cartId,
-          productId: request.productId
-        }
-      }
-    })
+          productId: request.productId,
+        },
+      },
+    });
 
-    return toCartItemResponse(cartItem)
+    return toCartItemResponse(cartItem);
   }
 }

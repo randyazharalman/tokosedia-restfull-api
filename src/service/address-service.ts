@@ -69,13 +69,17 @@ export class AddressService {
   static async remove(user: User, request: DeleteAddressRequest): Promise<AddressResponse> {
         const removeRequest = Validation.validate(AddressValidation.DELETE, request);
 
-        console.log(removeRequest);
+        const addressExists = await prisma.address.findUnique({
+          where: {
+            id: removeRequest.id
+          }
+        })
+
+        if(!addressExists) throw new ResponseError(404, "Address not found")
+
         const address = await prisma.address.delete({
             where: {
                 id: removeRequest.id,
-                // user: {
-                //   id: deleteRequest.userId
-                // }
             }
         });
 
