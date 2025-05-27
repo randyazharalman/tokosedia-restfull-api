@@ -5,13 +5,13 @@ import { logger } from "../src/application/logging";
 
 describe('POST /api/users/:userId/addresses', () => {
    beforeEach(async () => {
-      await UserTest.create();
+      // await UserTest.create();
       // await AddressTest.create()
     });
   
     afterEach(async () => {
       await AddressTest.delete() 
-      await UserTest.delete();
+      // await UserTest.delete();
     });
 
    it('should be create address', async() => {
@@ -62,6 +62,8 @@ describe('POST /api/users/:userId/addresses', () => {
     expect(response.body.errors).toBeDefined();
    });
 })
+
+
 
 
 describe('PUT /api/users/:userId/addresses/:addressId', () => {

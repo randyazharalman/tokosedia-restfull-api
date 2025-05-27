@@ -1,6 +1,8 @@
-import { Address, Product, Review, User } from "@prisma/client";
+import { Address, Payment, Product, Review, Shipping, User } from "@prisma/client";
 import { prisma } from "../src/application/database";
 import bcrypt from "bcrypt";
+import { ResponseError } from "../src/error/response-error";
+import { ShippingResponse } from "../src/model/shipping-model";
 
 export class UserTest {
   static async get(): Promise<User> {
@@ -8,6 +10,9 @@ export class UserTest {
       where: {
         username: "test",
       },
+      include: {
+        addresses: true,
+      }
     });
 
     if (!user) {
@@ -268,3 +273,110 @@ export class ActivityLogTest{
     return await prisma.activityLog.deleteMany()
   }
 }
+
+export class TransactionTest{
+  static transactionData = {
+    userId: "",
+    status: "",
+    total: 1,
+  }
+
+  static async create() {
+    const user = await UserTest.get()
+    const transaction = await prisma.transaction.create({
+      data: {
+        ...this.transactionData,
+        userId:Number(user.id),
+        status: "pending"
+      }
+    })
+
+    return transaction;
+  }
+
+  static async get(){
+    const transaction = await prisma.transaction.findFirst({
+      where: {
+        status: "pending"
+      }
+    })
+
+    return transaction;
+  }
+
+  static async delete() {
+    return await prisma.transaction.deleteMany();
+  }
+}
+
+export class ShippingTest{
+  static shippingData = {
+    transactionId: "",
+    trackingCode: "testTrackingCode",
+    address: "test address",
+    courier: "test courier",
+    shippedAt: "test shippedAt",
+  }
+
+  static async create() {
+    const transaction = await TransactionTest.get();
+    const shipping = await prisma.shipping.create({
+      data: {
+        ...this.shippingData,
+        transactionId: Number(transaction?.id)
+      }
+    })
+
+    return shipping
+  }
+
+   static async get(): Promise<Shipping>{
+    const shipping = await prisma.shipping.findFirst({
+      where: {
+        trackingCode: "tctest123"
+      }
+    })
+
+    if(!shipping) throw new ResponseError(404, "Shipping not found")
+
+    return shipping;
+  }
+
+  static async delete(){
+    return await prisma.shipping.deleteMany()
+  }
+}
+
+export class PaymentTest {
+  static paymentData = {
+    transactionId: 1,
+    method: "BANK_TRANSFER",
+    paidAt: null,
+    amount: 100,
+  }
+  static async create() {
+    const payment = await prisma.payment.create({
+      data: this.paymentData
+    })
+
+    return payment;
+  }
+
+  static async get(): Promise<Payment> {
+    const payment = await prisma.payment.findFirst({
+      where: {
+        method: this.paymentData.method
+      }
+    })
+
+    if(!payment) throw new Error("Payment not found")
+
+
+    return payment
+  }
+
+  static async delete() {
+  return  await prisma.payment.deleteMany()
+  }
+}
+

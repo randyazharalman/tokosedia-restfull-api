@@ -9,36 +9,56 @@ import { CartItemController } from "../controller/cart-item-controller";
 import { WishlistController } from "../controller/wishlist-controller";
 import { ActivityLogController } from "../controller/activity-log-controller";
 import { TransactionController } from "../controller/transaction-controller";
+import { shippingRouter } from "./shipping-router";
+import { paymentRouter } from "./payment-router";
+import { wishlistRouter } from "./wishlist-router";
+import { userRouter } from "./user-router";
+import { addressRouter } from "./address-router";
+import { productRouter } from "./product-router";
+import { activityLogRouter } from "./activity-log-router";
+import { cartRouter } from "./cart-router";
+import { reviewRouter } from "./review-router";
+import { transactionRouter } from "./transaction-router";
 
-export const apiRouter = express.Router();
+export const apiRouter = express.Router(); 
 
 apiRouter.use(authMiddleware);
+apiRouter.use(userRouter);
+apiRouter.use(addressRouter);
+apiRouter.use(productRouter);
+apiRouter.use(shippingRouter);
+apiRouter.use(paymentRouter);
+apiRouter.use(wishlistRouter);
+apiRouter.use(activityLogRouter);
+apiRouter.use(cartRouter);
+apiRouter.use(reviewRouter);
+apiRouter.use(transactionRouter)
 
 // USER
-apiRouter.get('/api/users/current', UserController.get)
-apiRouter.patch('/api/users/current', UserController.update)
-apiRouter.delete('/api/users/current', UserController.logout)
+// apiRouter.get('/api/users/current', UserController.get)
+// apiRouter.patch('/api/users/current', UserController.update)
+// apiRouter.delete('/api/users/current', UserController.logout)
 
 
 // PRODUCT
-apiRouter.post('/api/products', ProductController.create)
+// apiRouter.post('/api/products', ProductController.create)
 // apiRouter.get('/api/products', ProductController.get)
-apiRouter.get('/api/products/:productId', ProductController.get)
-apiRouter.put('/api/products/:productId', ProductController.update)
-apiRouter.delete('/api/products/:productId', ProductController.delete)  
+// apiRouter.get('/api/products/:productId', ProductController.get)
+// apiRouter.put('/api/products/:productId', ProductController.update)
+// apiRouter.delete('/api/products/:productId', ProductController.delete)  
 
 
 // ADDRESS
-apiRouter.post('/api/users/:userId/addresses', AddressController.create)
-apiRouter.get('/api/users/:userId/addresses/:addressId', AddressController.get)
-apiRouter.put('/api/users/:userId/addresses/:addressId', AddressController.update)
-apiRouter.delete('/api/users/:userId/addresses/:addressId', AddressController.delete)
+// apiRouter.post('/api/users/:userId/addresses', AddressController.create)
+// apiRouter.get('/api/users/:userId/addresses/:addressId', AddressController.get)
+// apiRouter.put('/api/users/:userId/addresses/:addressId', AddressController.update)
+// apiRouter.delete('/api/users/:userId/addresses/:addressId', AddressController.delete)
 
 // REVIEW
-apiRouter.post('/api/reviews', ReviewController.create)
-apiRouter.get('/api/products/:productId/reviews', ReviewController.get)
-apiRouter.put('/api/reviews/:reviewId', ReviewController.update)
-apiRouter.delete('/api/reviews/:reviewId', ReviewController.delete)
+// apiRouter.post('/api/reviews', ReviewController.create)
+// apiRouter.get('/api/products/:productId/reviews', ReviewController.get)
+// apiRouter.put('/api/reviews/:reviewId', ReviewController.update)
+// apiRouter.delete('/api/reviews/:reviewId', ReviewController.delete)
 
 // CATEGORIES
 // apiRouter.get('/api/categories');
@@ -48,28 +68,34 @@ apiRouter.delete('/api/reviews/:reviewId', ReviewController.delete)
 // apiRouter.delete('/api/categories/:categoriesId')
 
 //  CART
-apiRouter.post('/api/users/:userId/carts', CartController.create)
-apiRouter.get('/api/users/:userId/carts', CartController.get)
+// apiRouter.post('/api/users/:userId/carts', CartController.create)
+// apiRouter.get('/api/users/:userId/carts', CartController.get)
 
 // CART ITEM
-apiRouter.post('/api/cart/items', CartItemController.create)
-apiRouter.put('/api/cart/items', CartItemController.update)
-apiRouter.delete('/api/cart/items', CartItemController.delete)
+// apiRouter.post('/api/cart/items', CartItemController.create)
+// apiRouter.put('/api/cart/items', CartItemController.update)
+// apiRouter.delete('/api/cart/items', CartItemController.delete)
 
 
 // WISHLIST
-apiRouter.get('/api/users/:userId/wishlist', WishlistController.get)
-apiRouter.post('/api/users/:userId/wishlist', WishlistController.create)
-apiRouter.delete('/api/users/:userId/wishlist', WishlistController.delete)
+// apiRouter.get('/api/users/:userId/wishlist', WishlistController.get)
+// apiRouter.post('/api/users/:userId/wishlist', WishlistController.create)
+// apiRouter.delete('/api/users/:userId/wishlist', WishlistController.delete)
 
 // ACTIVITY LOG
-apiRouter.get('/api/users/:userId/activity-logs', ActivityLogController.get)
-apiRouter.post('/api/users/:userId/activity-logs', ActivityLogController.create)
-apiRouter.delete('/api/users/:userId/activity-logs', ActivityLogController.delete)
+// apiRouter.get('/api/users/:userId/activity-logs', ActivityLogController.get)
+// apiRouter.post('/api/users/:userId/activity-logs', ActivityLogController.create)
+// apiRouter.delete('/api/users/:userId/activity-logs', ActivityLogController.delete)
 
 
 // TRANSACTION
-apiRouter.get('/api/users/:userId/transactions', TransactionController.getByUserId)
-apiRouter.post('/api/users/:userId/transactions', TransactionController.create)
-apiRouter.put('/api/transactions/:transactionId', TransactionController.update)
-apiRouter.delete('/api/transactions/:transactionId', TransactionController.delete)
+// apiRouter.get('/api/users/:userId/transactions', TransactionController.getByUserId)
+// apiRouter.post('/api/users/:userId/transactions', TransactionController.create)
+// apiRouter.put('/api/transactions/:transactionId', TransactionController.update)
+// apiRouter.delete('/api/transactions/:transactionId', TransactionController.delete)
+
+
+// SHIPPING
+
+
+// PAYMENT
