@@ -4,19 +4,19 @@ Backend REST API for **Tokosedia**, an e-commerce platform built with **Express.
 
 ## Features
 
-- 🔐 JWT Authentication
-- 👤 User Management
-- 📦 Product Management
-- 🛒 Shopping Cart
-- ❤️ Wishlist
-- 📍 Shipping Address
-- 💳 Payment
-- 🧾 Transaction Management
-- ⭐ Product Reviews
-- 📋 Activity Logging
-- ✅ Request Validation with Zod
-- 📝 Centralized Error Handling
-- 📊 Logging with Winston
+-  JWT Authentication
+-  User Management
+-  Product Management
+-  Shopping Cart
+-  Wishlist
+-  Shipping Address
+-  Payment
+-  Transaction Management
+-  Product Reviews
+-  Activity Logging
+-  Request Validation with Zod
+-  Centralized Error Handling
+-  Logging with Winston
 
 ## Tech Stack
 
